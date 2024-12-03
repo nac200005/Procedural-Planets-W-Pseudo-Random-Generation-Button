@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
-
     [Range(2, 256)]
     public int resolution = 10;
     public bool autoUpdate = true;
@@ -25,7 +24,6 @@ public class Planet : MonoBehaviour
     [SerializeField, HideInInspector]
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
-
 
     void Initialize()
     {
@@ -51,7 +49,9 @@ public class Planet : MonoBehaviour
                 meshFilters[i] = meshObj.AddComponent<MeshFilter>();
                 meshFilters[i].sharedMesh = new Mesh();
             }
-            meshFilters[i].GetComponent<MeshRenderer>().sharedMaterial = colourSettings.planetMaterial;
+
+            // Ensure a unique material for each planet
+            meshFilters[i].GetComponent<MeshRenderer>().material = new Material(colourSettings.planetMaterial);
 
             terrainFaces[i] = new TerrainFace(shapeGenerator, meshFilters[i].sharedMesh, resolution, directions[i]);
             bool renderFace = faceRenderMask == FaceRenderMask.All || (int)faceRenderMask - 1 == i;
@@ -61,16 +61,17 @@ public class Planet : MonoBehaviour
 
     public void GeneratePlanet()
     {
+        // Instantiate new shape and colour settings for each planet
+        shapeSettings = Instantiate(shapeSettings);
+        colourSettings = Instantiate(colourSettings);
 
+        // Randomize the settings for this planet
         shapeSettings.noiseLayers[0].noiseSettings.simpleNoiseSettings.Randomize();
 
         foreach (ColourSettings.BiomeColourSettings.Biome biome in colourSettings.biomeColourSettings.biomes)
         {
             biome.Randomize();
         }
-
-
-
 
         Initialize();
         GenerateMesh();

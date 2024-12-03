@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class ColourSettings : ScriptableObject
 {
-
     public Material planetMaterial;
     public BiomeColourSettings biomeColourSettings;
     public Gradient oceanColour;
@@ -45,9 +44,7 @@ public class ColourSettings : ScriptableObject
 
                 tint = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
                 tintPercent = Random.Range(0f, 0.5f);
-
             }
-            
 
             public Gradient gradient;
             public Color tint;
@@ -57,5 +54,4 @@ public class ColourSettings : ScriptableObject
             public float tintPercent;
         }
     }
-
 }
